@@ -2,11 +2,19 @@
  * Handles ALL Game-Related Events
  */
 
-class GameManager {
-    connections: [];
+import Player from "../types/Player";
+import {Connections} from "../ProtocolManager";
 
-    constructor(connections: []) {
+class GameManager {
+    connections: Connections;
+
+    constructor(connections: Connections) {
         this.connections = connections;
+    }
+
+    // TODO: implement method
+    addToGame(player1: Player, player2: Player): boolean {
+        return false;
     }
 
 }

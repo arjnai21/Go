@@ -42,15 +42,15 @@ class GameRequestListener extends SocketListener {
                 const wasSent = manager.gameRequest.sendGameRequest(me, data.username);
 
                 if (wasSent) {
-                    manager.sendMessage(socket, "Request sent!");
+                    manager.sendMessage(socket, `Game request sent to ${data.username}!`);
                 } else {
-                    manager.sendError(socket, "Requested player not found.");
+                    manager.sendError(socket, `Requested player, ${data.username}, not found!`);
                 }
             }
         });
 
         // player response
-        socket.on('client_server_respond_to_request', function(data: GameRequestResponse) {
+        socket.on('client_server_request_respond', function(data: GameRequestResponse) {
             const gameRequest = manager.gameRequest.getRequest(data.id);
             let otherPlayer;
 
@@ -62,15 +62,16 @@ class GameRequestListener extends SocketListener {
                 manager.gameRequest.removeRequest(gameRequest.id);
 
                 if(data.accepted) {
-                    // TODO: implement game manager add to game
-                    // manager.game.addToGame(me, otherPlayer)
+                    // eslint-disable-next-line max-len
+                    manager.sendMessage(socket, `Accepted game request from ${otherPlayer.username}`);
+                    // eslint-disable-next-line max-len
+                    manager.sendMessage(otherPlayer.socket, `${me.username} has accepted your game request!`);
 
-                    // eslint-disable-next-line
-                    manager.sendMessage(socket, `Accepted game request from ${otherPlayer.username!}`);
+                    manager.game.addToGame(me, otherPlayer)
                 } else {
-                    // eslint-disable-next-line
-                    manager.sendMessage(socket, `Denied game request from ${otherPlayer.username!}!`);
-                    // eslint-disable-next-line
+                    // eslint-disable-next-line max-len
+                    manager.sendMessage(socket, `Denied game request from ${otherPlayer.username}!`);
+                    // eslint-disable-next-line max-len
                     manager.sendMessage(otherPlayer.socket, `${me.username!} has denied your game request!`);
                 }
             }

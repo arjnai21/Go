@@ -20,7 +20,7 @@ class GameRequestManager {
         const players: [string?] = [];
 
         for(const player of Object.values(this.connections)) {
-            if(player.socket.id !== requester.socket.id && player.username) {
+            if(player.hasUsername() && player.socket.id !== requester.socket.id) {
                 players.push(player.username);
             }
         }
@@ -36,15 +36,12 @@ class GameRequestManager {
         return this.getRequest(new GameRequest(from.username || "", to).id) !== null;
     }
 
-    sendGameRequest(from: Player, to: string): boolean {
-        const sender = this.connections[from.socket.id];
-        if(!sender.username)
-            return false;
+    sendGameRequest(sender: Player, to: string): boolean {
         const request = new GameRequest(sender.username, to);
 
         for(const player of Object.values(this.connections)) {
             // eslint-disable-next-line max-len
-            if(player.username && player.username.toLowerCase() === to.toLowerCase() && !player.inGame) {
+            if(player.hasUsername() && player.username.toLowerCase() === to.toLowerCase() && !player.inGame) {
                 player.socket.emit('server_client_game_request', request);
                 this.gameRequests.put(request.id, request, GAME_REQUEST_TIMEOUT);
                 return true;
