@@ -11,14 +11,6 @@ interface UsernameRequest {
     username: string;
 }
 
-interface UserPlayRequest {
-    username: string
-}
-
-interface UserPlayResponse {
-    sender: string
-}
-
 // Responses
 
 class PlayerListener extends SocketListener {
@@ -28,8 +20,7 @@ class PlayerListener extends SocketListener {
     }
 
     configure() {
-        const manager = this.manager;
-        const socket = this.socket;
+        const { manager, socket } = this;
 
         // username
         socket.on('client_server_set_username', function(data: UsernameRequest) {
@@ -42,16 +33,6 @@ class PlayerListener extends SocketListener {
             } else {
                 manager.sendError(socket, 'No username provided!');
             }
-        });
-
-        // player request
-        socket.on('client_server_request_user', function() {
-
-        });
-
-        // player response
-        socket.on('client_server_respond_to_request', function() {
-
         });
     }
 }
