@@ -1,5 +1,5 @@
 import {Connections} from "../ProtocolManager";
-import { CacheClass } from "memory-cache";
+import { CacheClass, Cache } from "memory-cache";
 import GameRequest from "../types/GameRequest";
 import Player from "../types/Player";
 
@@ -13,7 +13,7 @@ class GameRequestManager {
 
     constructor(connections: Connections) {
         this.connections = connections;
-        this.gameRequests = new CacheClass<string, GameRequest>();
+        this.gameRequests = new Cache();
     }
 
     getLobbyPlayers(requester: Player): [string?] {

@@ -6,8 +6,6 @@ import express, { NextFunction, Request, Response } from 'express';
 import StatusCodes from 'http-status-codes';
 import 'express-async-errors';
 
-import BaseRouter from './routes';
-import testAPIRouter from './routes/testApi';
 import logger from '@shared/Logger';
 
 const app = express();
@@ -34,13 +32,10 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Add APIs
-app.use('/', BaseRouter);
 
 app.get("*", function (req, res){
-    res.json({'hi': 'this page doesnt axist'});
+    res.json({'hi': 'this page doesnt exist'});
 });
-
-app.use("/testAPI", testAPIRouter);
 
 // Print API errors
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

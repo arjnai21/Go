@@ -10,11 +10,12 @@ app.listen(port, () => {
 
 // SocketIO Server
 import Http from 'http';
-import SocketIOServer from 'socket.io';
+import { Server as SocketIOServer } from 'socket.io';
 import ProtocolManager from "./io/ProtocolManager";
 import configureListeners from "./io/configureListeners";
 
 const http = new Http.Server(app);
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 const ioServer = new SocketIOServer(http);
 const manager = new ProtocolManager();
 
