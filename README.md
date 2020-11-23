@@ -2,7 +2,7 @@ Setup code for Capstone project by Arjun, Elias, Anthony, and David
 
 client is written in React and is stored "client"
 
-server is written in Express" and is stored in "server"
+server is written in Express and is stored in "server"
 
 To begin, cd into both directories and run "npm install"
 

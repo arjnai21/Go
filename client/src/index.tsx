@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+import LobbyPage from "./LobbyPage";
 import GamePage from "./GamePage";
 import SocketIO from "socket.io-client";
 import {
@@ -26,14 +27,23 @@ let gamePage = (
   />
 );
 
+let lobbyPage = (
+  <LobbyPage
+    username={""}
+    players={[""]}
+    inviteDialogOpen={false}
+  />
+);
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Switch>
       <Route exact path="/">
           <App />
-          <InitGameButton></InitGameButton>
+          <SetUsernameForm></SetUsernameForm>
         </Route>
+        <Route path="/lobby">{() => lobbyPage}</Route>
         <Route path="/game">{() => gamePage}</Route>
         
       </Switch>
@@ -47,6 +57,38 @@ ReactDOM.render(
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 // reportWebVitals();
 const socket = SocketIO.io("http://localhost:3001/");
+
+function SetUsernameForm() {
+  const history = useHistory();
+
+  var username : string;
+
+  function handleChange(e : any) {
+    username = e.target.value;
+  }
+
+  function SetUsername() {
+  
+    socket.emit("client_server_set_username", {username});
+
+    lobbyPage = <LobbyPage username={username} players={[""]} inviteDialogOpen={false} />
+    // gamePage = new GamePage({color:"B", goTileHandler:goTileHandler, board:blankBoard, currentPlayer:"B", opponentName:"spaghetti"});
+    console.log(lobbyPage)
+    history.push("/lobby");
+  }
+
+  return (
+    <div>
+      <label>
+        Enter a name:
+        <input type="text" name="username" onChange={handleChange} />
+      </label>
+      <Button onClick={SetUsername} component={Link} to="/lobby">
+        Play
+      </Button>
+    </div>
+  );
+}
 
 function InitGameButton() {
   const history = useHistory();

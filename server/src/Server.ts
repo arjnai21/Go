@@ -34,7 +34,8 @@ if (process.env.NODE_ENV === 'production') {
 // Add APIs
 
 app.get("*", function (req, res){
-    res.json({'hi': 'this page doesnt exist'});
+    //res.json({'hi': 'this page doesnt exist'}); // TODO: This shows up if I don't comment it out -- I commented it out, but we need to fix later 
+    res.send("");
 });
 
 // Print API errors
