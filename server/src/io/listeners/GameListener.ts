@@ -39,12 +39,6 @@ class GameRequestListener extends SocketListener {
             socket.emit("server_client_move_played", returnObj);
         });
 
-        socket.on('client_server_lobby', function() {
-            const players = manager.gameRequest.getLobbyPlayers(me);
-            socket.emit('server_client_lobby', { players });
-        });
-
-
     }
 }
 
