@@ -20,7 +20,7 @@ class App extends React.Component<{/*default props*/} & RouteComponentProps, {so
     constructor(props : any) {
         super(props);
         this.state = {socket: SocketIO.io("http://localhost:3001")};
-        this.setState({socket: SocketIO.io("http://localhost:3001")});
+        // this.setState({socket: SocketIO.io("http://localhost:3001")});
 
         this.SetUsername = this.SetUsername.bind(this);
         this.SetUsernameForm = this.SetUsernameForm.bind(this);
