@@ -14,17 +14,14 @@ import { Server as SocketIOServer } from 'socket.io';
 import ProtocolManager from "./io/ProtocolManager";
 import configureListeners from "./io/configureListeners";
 
-const http =  Http.createServer(app);
-http.listen(port, () => {
-    logger.info('Express server started on port: ' + port);
-});
+const http = Http.createServer(app);
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-const ioServer = new SocketIOServer(http, {
-    cors: {
-        origin: "*"
-    }
-});
-
+const ioServer = new SocketIOServer(http);
 const manager = new ProtocolManager();
 
 configureListeners(ioServer, manager);
+
+ioServer.listen(http, { cors: { origin: 'http://localhost:3000' } })
+http.listen(port, () => {
+    logger.info('Express server started on port: ' + port);
+});

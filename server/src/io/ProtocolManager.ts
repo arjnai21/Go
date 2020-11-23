@@ -42,15 +42,11 @@ class ProtocolManager {
     addConnection(socket: Socket) {
         console.log("adding connection");
         this.connections[socket.id] = new Player(socket);
-        // this.gameRequest = new GameRequestManager(this.connections);
-        console.log(this.connections);
         const keys = Object.keys(this.connections);
         for (let i = 0; i < keys.length; i++) {
-            console.log("sending lobby to players");
             this.connections[keys[i]].socket.emit("server_client_lobby", {
-                    players: this.gameRequest.getLobbyPlayers(this.connections[keys[i]])
-                }
-            );
+                players: this.gameRequest.getLobbyPlayers(this.connections[keys[i]])
+            });
         }
     }
 

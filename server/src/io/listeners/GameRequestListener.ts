@@ -29,6 +29,7 @@ class GameRequestListener extends SocketListener {
         const me = manager.getPlayer(socket);
 
         socket.on('client_server_lobby', function() {
+            console.log('requested lobby players!');
             const players = manager.gameRequest.getLobbyPlayers(me);
             socket.emit('server_client_lobby', { players });
         });
@@ -67,8 +68,9 @@ class GameRequestListener extends SocketListener {
                     // eslint-disable-next-line max-len
                     manager.sendMessage(otherPlayer.socket, `${me.username} has accepted your game request!`);
 
-                    manager.game.addToGame(me, otherPlayer);
-
+                    // send response to other player
+                    otherPlayer.socket.emit('server_client_game_request_response', { accepted: true, from: me.username });
+                    manager.game.addToGame(me, otherPlayer)
                 } else {
                     // eslint-disable-next-line max-len
                     manager.sendMessage(socket, `Denied game request from ${otherPlayer.username}!`);

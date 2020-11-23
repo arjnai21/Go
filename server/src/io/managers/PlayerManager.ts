@@ -11,14 +11,11 @@ class PlayerManager {
 
     setUsername(socket: Socket, username: string): boolean {
         for(const player of Object.values(this.connections)) {
-            if(player.hasUsername() && player.username.toLowerCase() !== username.toLowerCase()) {
+            if(player.hasUsername() && player.username.toLowerCase() === username.toLowerCase()) {
                 return false;
             }
         }
-
         this.connections[socket.id].username = username;
-
-
         return true;
     }
 
