@@ -51,7 +51,35 @@ class ProtocolManager {
     }
 
     removeConnection(socket: Socket) {
+        //remove socket
+        console.log("REMOVING CONNECTION: " + socket.id)
+        console.log(this.connections);
         delete this.connections[socket.id];
+        console.log("-----------------------------------")
+        console.log(this.connections);
+        const keys = Object.keys(this.connections);
+        console.log(keys)
+        for (let i = 0; i < keys.length; i++) { //TODO MAKE ITS OWN FUNCTION
+            // console.log("sending lobby to players");
+            this.connections[keys[i]].socket.emit("server_client_lobby", {
+                    // eslint-disable-next-line max-len
+                    players: this.gameRequest.getLobbyPlayers(this.connections[keys[i]])
+                }
+            );
+        }
+    }
+
+    broadcastLobby(){
+        const keys = Object.keys(this.connections);
+        console.log(keys)
+        for (let i = 0; i < keys.length; i++) {
+            // console.log("sending lobby to players");
+            this.connections[keys[i]].socket.emit("server_client_lobby", {
+                    // eslint-disable-next-line max-len
+                    players: this.gameRequest.getLobbyPlayers(this.connections[keys[i]])
+                }
+            );
+        }
     }
 
     sendError(socket: Socket, error_message: string) {

@@ -18,6 +18,8 @@ class GameRequestManager {
 
     getLobbyPlayers(requester: Player): [string?] {
         const players: [string?] = [];
+        console.log("GETTING LOBBY PLAYERS");
+        // console.log(this.connections);
 
         for(const player of Object.values(this.connections)) {
             if(player.hasUsername() && player.socket.id !== requester.socket.id) {

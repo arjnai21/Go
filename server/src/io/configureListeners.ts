@@ -16,7 +16,7 @@ function configureListeners(ioServer: SocketIOServer, manager: ProtocolManager) 
         new GameRequestListener(socket, manager);
         new GameListener(socket, manager);
 
-        socket.on('disconnect', function(socket: Socket) {
+        socket.on('disconnect', function() {
            manager.removeConnection(socket);
         });
     });

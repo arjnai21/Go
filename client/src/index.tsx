@@ -115,7 +115,7 @@ function InitGameButton() {
   );
 }
 socket.on("connect", () => console.log("connection"));
-
+socket.on("server_message", (message: any) => console.log(message));
 
 socket.on(
   "server_client_game_start",

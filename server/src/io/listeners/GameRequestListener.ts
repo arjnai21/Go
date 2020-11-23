@@ -63,12 +63,14 @@ class GameRequestListener extends SocketListener {
                 manager.gameRequest.removeRequest(gameRequest.id);
 
                 if(data.accepted) {
+                    console.log(`Accepted game request from ${otherPlayer.username}`)
                     // eslint-disable-next-line max-len
                     manager.sendMessage(socket, `Accepted game request from ${otherPlayer.username}`);
                     // eslint-disable-next-line max-len
                     manager.sendMessage(otherPlayer.socket, `${me.username} has accepted your game request!`);
 
                     // send response to other player
+                    // eslint-disable-next-line max-len
                     otherPlayer.socket.emit('server_client_game_request_response', { accepted: true, from: me.username });
                     manager.game.addToGame(me, otherPlayer)
                 } else {
