@@ -9,6 +9,7 @@ import GameListener from "./listeners/GameListener";
 
 function configureListeners(ioServer: SocketIOServer, manager: ProtocolManager) {
     ioServer.on('connection', function(socket: Socket) {
+        console.log("connection was made");
         manager.addConnection(socket);
 
         // add listeners
