@@ -5,6 +5,7 @@ interface GoTileProps {
     x: number,
     y: number,
     heldBy: string
+    handler: any
 }
 
 class GoTile extends React.Component<GoTileProps, unknown> {
@@ -16,7 +17,7 @@ class GoTile extends React.Component<GoTileProps, unknown> {
 
     determineImg() {
         let path: string = "/SVG/";
-        if (this.props.x < 18) {
+        if (this.props.x < 8) {
             path += 0;
         }
         if (this.props.y > 0) {
@@ -25,7 +26,7 @@ class GoTile extends React.Component<GoTileProps, unknown> {
         if (this.props.x > 0) {
             path += 2;
         }
-        if (this.props.y < 18) {
+        if (this.props.y < 8) {
             path += 3;
         }
 
@@ -41,7 +42,7 @@ class GoTile extends React.Component<GoTileProps, unknown> {
   render() {
     return (
         <React.Fragment>
-<img src={this.determineImg()} style={{width: 40}} className="GoTile-img" alt="GoTile-img" />
+<img src={this.determineImg()} style={{width: 40}} className="GoTile-img" alt="GoTile-img" onClick={() => this.props.handler(this.props.x, this.props.y)} />
         </React.Fragment>
     );
   }
