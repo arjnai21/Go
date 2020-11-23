@@ -43,6 +43,13 @@ class GamePage extends React.Component<{}, {}> {
             <Typography variant="h5" style={{textAlign: "center"}}>
                 You captured:
             </Typography>
+            <Snackbar
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                open={true}
+                message="Name won!"
+                key={"bottom" + "right"}
+            ><Button variant="contained" style={{textAlign: "center"}}>Pass</Button></Snackbar>
+            
         </div>
     );
   }
