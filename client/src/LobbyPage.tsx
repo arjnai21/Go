@@ -36,7 +36,11 @@ class LobbyPage extends React.Component<LobbyPageProps, LobbyPageState> {
 
   constructor(props: LobbyPageProps) {
     super(props);
-    this.state = props;
+    this.state = {
+        username: props.username,
+        players: props.players,
+        inviteDialogOpen: props.inviteDialogOpen
+    };
   }
 
 //   changeState(newState: any) {

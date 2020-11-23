@@ -148,5 +148,4 @@ function goTileHandler(xPos: number, yPos: number) {
 // socket.on("server_client_game_over", (information: {myCaptured: Number, theirCaptured: Number, win: String}) => {
 //   GamePage.changeState({win: information.win, winSnackbarOpen: true});
 // });
-
 export default socket;
