@@ -81,6 +81,10 @@ class LobbyPage extends React.Component<LobbyPageProps, LobbyPageState> {
       this.setState({inviteDialogOpen: false});
       socket.emit("client_server_request_respond", { sender: this.state.opponentName, accepted: false });
     };
+
+    const handleRefreshLobby = () => {
+        socket.emit('client_server_lobby');
+    }
     
     return (
         <div className="LobbyPage">
@@ -117,6 +121,7 @@ class LobbyPage extends React.Component<LobbyPageProps, LobbyPageState> {
  // @ts-ignore */}
                 <LobbyVirtualizedList players={this.state.players} ></LobbyVirtualizedList>
             </div>
+            <Button onClick={handleRefreshLobby}>Refresh</Button>
 
             
             
