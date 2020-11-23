@@ -59,7 +59,7 @@ class App extends React.Component<{/*default props*/} & RouteComponentProps, {so
 
     goTileHandler(xPos: number, yPos: number) {
         console.log(`${xPos} ${yPos}`);
-        this.state.socket.emit("client_server_play_move", { x: xPos, y: yPos });
+        this.state.socket.emit("client_server_play_move", { x: yPos, y: xPos });
     }
 
     componentDidMount() {
