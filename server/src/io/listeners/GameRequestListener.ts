@@ -74,6 +74,7 @@ class GameRequestListener extends SocketListener {
                     otherPlayer.socket.emit('server_client_game_request_response', { accepted: true, from: me.username });
                     manager.game.addToGame(me, otherPlayer)
                 } else {
+                    console.log("game request denied")
                     // eslint-disable-next-line max-len
                     manager.sendMessage(socket, `Denied game request from ${otherPlayer.username}!`);
                     // eslint-disable-next-line max-len

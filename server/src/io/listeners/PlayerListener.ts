@@ -30,6 +30,7 @@ class PlayerListener extends SocketListener {
                     console.log("updated upsername")
                     manager.sendMessage(socket, "Successfully updated username!");
                     console.log(manager.connections);
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                     manager.broadcastLobby();
                     // const keys = Object.keys(manager.connections);
                     // console.log(keys)

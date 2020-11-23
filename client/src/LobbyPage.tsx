@@ -29,6 +29,7 @@ interface LobbyPageState {
     opponentName?: string,
     declinedSnackbarOpen?: boolean,
     inviteDialogOpen: boolean
+    inviteId?: string
 }
 
 
@@ -57,7 +58,7 @@ class LobbyPage extends React.Component<LobbyPageProps, LobbyPageState> {
         
     socket.on("server_client_game_request", (information: {id: string, from: string, to: string}) => {
        if (information.to === this.state.username) {
-          this.setState({opponentName: information.from, inviteDialogOpen: true});
+          this.setState({opponentName: information.from, inviteDialogOpen: true, inviteId: information.id});
       }
     });
   }
@@ -74,7 +75,7 @@ class LobbyPage extends React.Component<LobbyPageProps, LobbyPageState> {
 
     const handleAccept = () => {
       this.setState({inviteDialogOpen: false});
-      socket.emit("client_server_request_respond", { sender: this.state.opponentName, accepted: true });
+      socket.emit("client_server_request_respond", { sender: this.state.opponentName, accepted: true, id: this.state.inviteId });
     };
 
     const handleDecline = () => {
