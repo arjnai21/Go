@@ -56,7 +56,7 @@ ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 // reportWebVitals();
-const socket = SocketIO.io("http://localhost:3001/");
+const socket = SocketIO.io("http://localhost:3001");
 
 function SetUsernameForm() {
   const history = useHistory();
@@ -114,6 +114,8 @@ function InitGameButton() {
     </Button>
   );
 }
+socket.on("connect", () => console.log("connection"));
+
 
 socket.on(
   "server_client_game_start",
