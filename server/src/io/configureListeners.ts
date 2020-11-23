@@ -5,6 +5,8 @@ import ProtocolManager from "./ProtocolManager";
 import PlayerListener from "./listeners/PlayerListener";
 import GameRequestListener from "./listeners/GameRequestListener";
 
+import GameListener from "./listeners/GameListener";
+
 function configureListeners(ioServer: SocketIOServer, manager: ProtocolManager) {
     ioServer.on('connection', function(socket: Socket) {
         manager.addConnection(socket);
@@ -12,6 +14,7 @@ function configureListeners(ioServer: SocketIOServer, manager: ProtocolManager) 
         // add listeners
         new PlayerListener(socket, manager);
         new GameRequestListener(socket, manager);
+        new GameListener(socket, manager);
 
         socket.on('disconnect', function(socket: Socket) {
            manager.removeConnection(socket);
