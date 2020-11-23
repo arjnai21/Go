@@ -8,7 +8,6 @@ import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
 import Button from '@material-ui/core/Button';
 import LobbyVirtualizedList from "./LobbyVirtualizedList";
-import socket from './index';
 import {
     BrowserRouter,
     Switch,
@@ -21,6 +20,7 @@ interface LobbyPageProps {
     username?: string,
     players: Array<string>,
     inviteDialogOpen: boolean
+    socket: any
 }
 
 interface LobbyPageState {
@@ -49,14 +49,14 @@ class LobbyPage extends React.Component<LobbyPageProps, LobbyPageState> {
 //   }
 
   componentDidMount() {
-      socket.emit("client_server_lobby");
-    socket.on("server_client_lobby", (information: {players: Array<string>}) => {
+      this.props.socket.emit("client_server_lobby");
+    this.props.socket.on("server_client_lobby", (information: {players: Array<string>}) => {
         console.log("getting players from server");
       console.log(information.players);
       this.setState({players: information.players})
     });
         
-    socket.on("server_client_game_request", (information: {id: string, from: string, to: string}) => {
+    this.props.socket.on("server_client_game_request", (information: {id: string, from: string, to: string}) => {
        if (information.to === this.state.username) {
           this.setState({opponentName: information.from, inviteDialogOpen: true, inviteId: information.id});
       }
@@ -75,16 +75,16 @@ class LobbyPage extends React.Component<LobbyPageProps, LobbyPageState> {
 
     const handleAccept = () => {
       this.setState({inviteDialogOpen: false});
-      socket.emit("client_server_request_respond", { sender: this.state.opponentName, accepted: true, id: this.state.inviteId });
+      this.props.socket.emit("client_server_request_respond", { sender: this.state.opponentName, accepted: true, id: this.state.inviteId });
     };
 
     const handleDecline = () => {
       this.setState({inviteDialogOpen: false});
-      socket.emit("client_server_request_respond", { sender: this.state.opponentName, accepted: false });
+      this.props.socket.emit("client_server_request_respond", { sender: this.state.opponentName, accepted: false });
     };
 
     const handleRefreshLobby = () => {
-        socket.emit('client_server_lobby');
+        this.props.socket.emit('client_server_lobby');
     }
     
     return (
@@ -120,7 +120,7 @@ class LobbyPage extends React.Component<LobbyPageProps, LobbyPageState> {
                 </Dialog>
                 {/*
  // @ts-ignore */}
-                <LobbyVirtualizedList players={this.state.players} ></LobbyVirtualizedList>
+                <LobbyVirtualizedList players={this.state.players} socket={this.props.socket}></LobbyVirtualizedList>
             </div>
             <Button onClick={handleRefreshLobby}>Refresh</Button>
 

@@ -4,7 +4,6 @@ import Grid from "@material-ui/core/Grid";
 import Snackbar from '@material-ui/core/Snackbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import socket from './index';
 import {
     BrowserRouter,
     Switch,
@@ -20,6 +19,7 @@ interface GamePageProps {
     currentPlayer?: string,
     opponentName?: string
     returnButtonHandler?: any,
+    socket: any
 }
 
 interface GamePageState {
@@ -46,11 +46,11 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
 //   }
 
   componentDidMount() {
-    socket.on("server_client_move_played", (information: {board: any, moveError: string, whiteCaptured: number, blackCaptured: number, currentPlayer: string}) => {
+    this.props.socket.on("server_client_move_played", (information: {board: any, moveError: string, whiteCaptured: number, blackCaptured: number, currentPlayer: string}) => {
         this.setState({board: information.board, whiteCaptured: information.whiteCaptured, blackCaptured: information.blackCaptured, currentPlayer: information.currentPlayer})
     });
         
-    socket.on("server_client_game_over", (information: {myCaptured: number, theirCaptured: number, win: string}) => {
+    this.props.socket.on("server_client_game_over", (information: {myCaptured: number, theirCaptured: number, win: string}) => {
         this.setState({win: information.win, winSnackbarOpen: true});
     });
   }
