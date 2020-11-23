@@ -3,7 +3,7 @@
  */
 
 import Player from "./types/Player";
-import { Socket } from "socket.io";
+import {Socket} from "socket.io";
 import PlayerManager from "./managers/PlayerManager";
 import GameRequestManager from "./managers/GameRequestManager";
 import GameManager from "./managers/GameManager";
@@ -16,7 +16,7 @@ class ProtocolManager {
     readonly connections: Connections
     // managers
     readonly player: PlayerManager
-    readonly gameRequest: GameRequestManager
+    gameRequest: GameRequestManager
     readonly game: GameManager
 
     constructor() {
@@ -31,8 +31,8 @@ class ProtocolManager {
     }
 
     getPlayerByUsername(username: string): Player | null {
-        for(const player of Object.values(this.connections)) {
-            if(player.hasUsername() && player.username.toLowerCase() === username.toLowerCase()) {
+        for (const player of Object.values(this.connections)) {
+            if (player.hasUsername() && player.username.toLowerCase() === username.toLowerCase()) {
                 return player;
             }
         }
@@ -40,7 +40,18 @@ class ProtocolManager {
     }
 
     addConnection(socket: Socket) {
+        console.log("adding connection");
         this.connections[socket.id] = new Player(socket);
+        // this.gameRequest = new GameRequestManager(this.connections);
+        console.log(this.connections);
+        const keys = Object.keys(this.connections);
+        for (let i = 0; i < keys.length; i++) {
+            console.log("sending lobby to players");
+            this.connections[keys[i]].socket.emit("server_client_lobby", {
+                    players: this.gameRequest.getLobbyPlayers(this.connections[keys[i]])
+                }
+            );
+        }
     }
 
     removeConnection(socket: Socket) {
@@ -48,11 +59,11 @@ class ProtocolManager {
     }
 
     sendError(socket: Socket, error_message: string) {
-        socket.emit('server_client_error', { error_message });
+        socket.emit('server_client_error', {error_message});
     }
 
     sendMessage(socket: Socket, message: string) {
-        socket.emit('server_message', { message });
+        socket.emit('server_message', {message});
     }
 
 }

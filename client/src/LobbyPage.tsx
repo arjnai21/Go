@@ -48,7 +48,9 @@ class LobbyPage extends React.Component<LobbyPageProps, LobbyPageState> {
 //   }
 
   componentDidMount() {
+      socket.emit("client_server_lobby");
     socket.on("server_client_lobby", (information: {players: Array<string>}) => {
+        console.log("getting players from server");
       console.log(information.players);
       this.setState({players: information.players})
     });

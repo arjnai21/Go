@@ -17,6 +17,8 @@ class PlayerManager {
         }
 
         this.connections[socket.id].username = username;
+
+
         return true;
     }
 

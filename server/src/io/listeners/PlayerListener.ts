@@ -28,6 +28,17 @@ class PlayerListener extends SocketListener {
             if(data.username) {
                 if(manager.player.setUsername(socket, data.username)) {
                     manager.sendMessage(socket, "Successfully updated username!");
+                    console.log(manager.connections);
+                    const keys = Object.keys(manager.connections);
+                    console.log(keys)
+                    for (let i = 0; i < keys.length; i++) {
+                        console.log("sending lobby to players");
+                        manager.connections[keys[i]].socket.emit("server_client_lobby", {
+                            // eslint-disable-next-line max-len
+                                players: manager.gameRequest.getLobbyPlayers(manager.connections[keys[i]])
+                            }
+                        );
+                    }
                 } else {
                     manager.sendError(socket, "Username already taken!");
                 }

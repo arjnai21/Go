@@ -20,11 +20,11 @@ class GameRequestManager {
         const players: [string?] = [];
 
         for(const player of Object.values(this.connections)) {
-            if(player.hasUsername() && player.socket.id !== requester.socket.id) {
+            if(player.hasUsername() /*&& player.socket.id !== requester.socket.id*/) {
                 players.push(player.username);
             }
         }
-
+console.log(players);
         return players;
     }
 
