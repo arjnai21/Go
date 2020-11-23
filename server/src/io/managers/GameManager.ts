@@ -25,8 +25,17 @@ class GameManager {
         player2.setGameId(id);
         player2.setColor("B");
         this.games.set(id, newGame);
-        player1.socket.emit("player_color", player1.getColor());
-        player2.socket.emit("player_color", player2.getColor());
+        player1.socket.emit("server_client_game_start",{
+            color: player1.color,
+            opponent: player2.username,
+            gameId: newGame.id,
+        });
+        player2.socket.emit("server_client_game_start",{
+            color: player2.color,
+            opponent: player1.username,
+            gameId: newGame.id,
+        });
+
         return true;
     }
 
