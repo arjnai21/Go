@@ -1,16 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import {BrowserRouter} from 'react-router-dom';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./NewApp";
+import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter> <App /></BrowserRouter>
-   
+    <App />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
@@ -57,16 +55,16 @@ reportWebVitals();
 
 // ReactDOM.render(
 //   <React.StrictMode>
-    // <BrowserRouter>
-    //   <Switch>
-    //   <Route exact path="/">
-    //       <App />
-    //       <SetUsernameForm></SetUsernameForm>
-    //     </Route>
-    //     <Route path="/lobby">{() => lobbyPage}</Route>
-    //     <Route path="/game">{() => gamePage}</Route>
-    //   </Switch>
-    // </BrowserRouter>
+// <BrowserRouter>
+//   <Switch>
+//   <Route exact path="/">
+//       <App />
+//       <SetUsernameForm></SetUsernameForm>
+//     </Route>
+//     <Route path="/lobby">{() => lobbyPage}</Route>
+//     <Route path="/game">{() => gamePage}</Route>
+//   </Switch>
+// </BrowserRouter>
 //   </React.StrictMode>,
 //   document.getElementById("root")
 // );
@@ -87,7 +85,7 @@ reportWebVitals();
 //   }
 
 //   function SetUsername() {
-  
+
 //     socket.emit("client_server_set_username", {username});
 
 //     lobbyPage = <LobbyPage username={username} players={[""]} inviteDialogOpen={false} />
