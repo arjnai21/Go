@@ -1,4 +1,3 @@
-import {Socket} from "socket.io";
 import Player from "./Player";
 import {Move} from "../listeners/GameListener";
 import {v4 as uuidv4, parse} from "uuid";
@@ -45,9 +44,24 @@ class Game {
         return this.board;
     }
 
-    checkWin(): boolean{
-        //TODO IMPLEMENT
+    hasPlayableMovesLeft(): boolean {
+        for(let x = 0; x < this.board.length; x++) {
+            for(let y = 0; y < this.board[x].length; y++) {
+                if(this.isValidMove(x, y)) {
+                    return true;
+                }
+            }
+        }
+
         return false;
+    }
+
+    isValidMove(x: number, y: number): boolean {
+        return true;
+    }
+
+    checkGameOver(): boolean{
+        return !this.hasPlayableMovesLeft();
     }
 
     getCapturedPieces(color: string): boolean {
