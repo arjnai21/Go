@@ -50,6 +50,10 @@ class Game {
         return false;
     }
 
+    getCapturedPieces(color: string): boolean {
+        // TODO IMPLEMENT
+        return false;
+    }
 
 }
 

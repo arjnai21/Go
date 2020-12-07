@@ -39,6 +39,18 @@ class GameRequestListener extends SocketListener {
             socket.emit("server_client_move_played", returnObj);
         });
 
+        socket.on("client_server_forfeit", function() {
+            const game = manager.game.getGame(me);
+
+            if(!game) {
+                manager.sendError(me.socket, 'You are not in a game!');
+                return;
+            }
+
+            const winner = game.player1 === me ? game.player2 : game.player1;
+            manager.game.gameOver(winner, true);
+        });
+
     }
 }
 

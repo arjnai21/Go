@@ -16,6 +16,10 @@ class GameManager {
         this.games = new Map();
     }
 
+    getGame(player: Player): Game | undefined {
+        return this.games.get(player.gameID);
+    }
+
     // TODO: implement method
     addToGame(player1: Player, player2: Player): boolean {
         const newGame: Game = new Game(player1, player2);
@@ -54,9 +58,42 @@ class GameManager {
         };
         game?.player1.socket.emit("server_client_move_played", returnObj);
         game?.player2.socket.emit("server_client_move_played", returnObj);
+    }
 
+    gameOver(winner: Player, isForfeit= false): boolean {
+        // 1. get game
+        // 2. remove games from list
+        // 3. remove game ids from players
+        // 4. send results to both players
+        const game = this.games.get(winner.gameID);
 
+        if(!game) {
+            // error should be thrown
+            return false;
+        }
 
+        this.games.delete(game.id);
+        game.player1.setGameId("");
+        game.player2.setGameId("");
+
+        for(const player of [game.player1, game.player2]) {
+            const opponentPlayer = player === game.player1 ? game.player2 : game.player1;
+
+            const opponentUsername = opponentPlayer.username;
+            const myCaptured = game.getCapturedPieces(player.color);
+            const theirCaptured = game.getCapturedPieces(opponentPlayer.username);
+
+            const returnObj = {
+                isForfeit,
+                opponentUsername,
+                myCaptured,
+                theirCaptured,
+                win: winner.color
+            };
+            player.socket.emit('server_client_game_over', returnObj);
+        }
+
+        return true;
     }
 
 }
