@@ -57,10 +57,15 @@ class Game {
     }
 
     isValidMove(x: number, y: number): boolean {
+        // invalid move
+        if(x >= this.board.length || y >= this.board[x].length || this.board[x][y] !== 'X')
+            return false
+
+        // TODO: implement valid move logic
         return true;
     }
 
-    checkGameOver(): boolean{
+    checkGameOver(): boolean {
         return !this.hasPlayableMovesLeft();
     }
 
