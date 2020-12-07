@@ -62,6 +62,7 @@ class Game {
             return false
 
         // TODO: implement valid move logic
+        // basically check if move is in an already captured zone
         return true;
     }
 
