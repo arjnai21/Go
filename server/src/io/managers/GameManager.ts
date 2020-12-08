@@ -47,13 +47,25 @@ class GameManager {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         const game = this.games.get(player.gameID);
         const response =  game?.playMove(player, move);
+        if(response == "game_over"){
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            // eslint-disable-next-line max-len
+            const winner:Player = game?.whiteCaptured > game?.blackCaptured ? game.player1 : game.player2;
+            this.gameOver(winner);
+            return "game_over";
+        }
         const returnObj = {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            board: game.getBoard(),
+            board: game?.getBoard(),
             moveError: response,
-            whiteCaptured: 0,
-            blackCaptured: 0,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            whiteCaptured: game.whiteCaptured,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            blackCaptured: game.blackCaptured,
             currentPlayer: game?.currentPlayer.color
         };
         game?.player1.socket.emit("server_client_move_played", returnObj);
@@ -91,6 +103,7 @@ class GameManager {
                 win: winner.color
             };
             player.socket.emit('server_client_game_over', returnObj);
+            console.log("THIS GAME IS OVER");
         }
 
         return true;

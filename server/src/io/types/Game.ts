@@ -8,7 +8,11 @@ class Game {
     public player1: Player; //"B"
     public player2: Player; //"W"
     public board: Array<string>[];
+    public previousBoard: Array<string>[];
     public currentPlayer: Player;
+    public passCount: number;
+    public whiteCaptured: number;
+    public blackCaptured: number;
 
     constructor(player1: Player, player2: Player) {
         this.player1 = player1;
@@ -19,7 +23,17 @@ class Game {
         for(let i = 0; i < 9; i++){
             this.board.push(["X", "X", "X", "X", "X", "X", "X", "X", "X"])
         }
+        this.previousBoard = this.copyBoard(this.board);
         this.currentPlayer = player1;
+        this.passCount = 0;
+        this.whiteCaptured = 0;
+        this.blackCaptured = 0;
+    }
+
+    copyBoard(array: Array<string>[]){
+        return array.map(function(arr : string[]) {
+            return arr.slice();
+        });
     }
 
     getGameId() : string{
@@ -27,16 +41,37 @@ class Game {
     }
 
     playMove(player : Player, move: Move):string{
+
         if(player != this.currentPlayer){
             return "wrong_player";
         }
+
+        if(move.x == -1 && move.y == -1){
+            //user decided to pass
+            console.log("RECIEVED PASS EVENT");
+            this.passCount++;
+            if (this.checkGameOver()){
+
+                return "game_over";
+            }
+            this.currentPlayer = player == this.player2 ? this.player1 : this.player2;
+            return "no_error";
+        }
         if(this.board[move.x][move.y] !== "X"){
+
             return "non_empty_space";
         }
         else{
-            this.board[move.x][move.y] = this.currentPlayer.color;
-            this.currentPlayer = player == this.player2 ? this.player1 : this.player2;
-            return "no_error";
+            if(this.isValidMove(move.x, move.y)) {
+                this.passCount = 0;
+                this.board[move.x][move.y] = this.currentPlayer.color;
+                this.currentPlayer = player == this.player2 ? this.player1 : this.player2;
+                // this.checkGameOver();
+                return "no_error";
+            }
+            else{
+                return "unknown_error"
+            }
         }
     }
 
@@ -58,7 +93,8 @@ class Game {
 
     isValidMove(x: number, y: number): boolean {
         // invalid move
-        if(x >= this.board.length || y >= this.board[x].length || this.board[x][y] !== 'X')
+        // eslint-disable-next-line max-len
+        if((x >= this.board.length || y >= this.board[x].length || this.board[x][y] !== 'X') && !(x == -1  && y == -1))
             return false
 
         // TODO: implement valid move logic
@@ -66,12 +102,21 @@ class Game {
     }
 
     checkGameOver(): boolean {
-        return !this.hasPlayableMovesLeft();
+        // if(this.passCount == 2){
+        //     //game is over
+        // }
+        // else return false;
+       return this.passCount == 2;//!this.hasPlayableMovesLeft();
     }
 
-    getCapturedPieces(color: string): boolean {
-        // TODO IMPLEMENT
-        return false;
+    getCapturedPieces(color: string): number {
+        if(color == "W"){
+            return this.whiteCaptured;
+        }
+        else if (color == "B"){
+            return this.blackCaptured;
+        }
+        return -1;
     }
 
 }

@@ -14,7 +14,7 @@ export interface Move {
 
 // Responses
 
-class GameRequestListener extends SocketListener {
+class GameListener extends SocketListener {
 
     constructor(socket: Socket, manager: ProtocolManager) {
         super(socket, manager);
@@ -27,16 +27,25 @@ class GameRequestListener extends SocketListener {
         // eslint-disable-next-line max-len
         socket.on("client_server_play_move", function (data: Move){ //TODO ONLY SEND TO THE PERSON WHO DIDNT PLAY WHICH ISNT EVEN THAT HARD TO IMPLEMENT BUT I DIDNT DO IT FOR SOME REASON
             const response : string = manager.game.playMove(me, data);
-            const returnObj = {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                board: manager.game.games.get(me.gameID).getBoard(),
-                moveError: response,
-                whiteCaptured: 0,
-                blackCaptured: 0,
-            };
-
-            socket.emit("server_client_move_played", returnObj);
+            if(response == "game_over"){
+                //game over already handled, nothing o do
+                return;
+            }
+            // const returnObj = {
+            //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //     // @ts-ignore
+            //     board: manager.game.games.get(me.gameID)?.getBoard(),
+            //     moveError: response,
+            //     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //     // @ts-ignore
+            //     whiteCaptured: manager.game.games.get(me.gameID).whiteCaptured,
+            //     //TODO THIS IS ALL CRAPPY CODE AND THERE IS A MUCH BETTER WAY
+            //         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //         // @ts-ignore
+            //     blackCaptured: manager.game.games.get(me.gameID).blackCaptured,
+            // };
+            //
+            // socket.emit("server_client_move_played", returnObj);
         });
 
         socket.on("client_server_forfeit", function() {
@@ -54,4 +63,4 @@ class GameRequestListener extends SocketListener {
     }
 }
 
-export default GameRequestListener;
+export default GameListener;
