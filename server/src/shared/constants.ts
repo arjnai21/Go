@@ -1,4 +1,5 @@
 import { Request } from 'express';
+// @ts-ignore
 import { IUser } from '@entities/User';
 
 

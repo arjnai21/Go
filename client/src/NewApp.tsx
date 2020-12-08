@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './NewApp.css';
 import NamePage from './NamePage';
 import LobbyPage from './LobbyPage';
 import GamePage from './GamePage';

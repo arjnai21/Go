@@ -2,6 +2,7 @@ import React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { Button, Paper, TextField, Typography } from "@material-ui/core";
 import { styled } from "@material-ui/core/styles";
+import logo from './logo.svg';
 
 interface NamePageProps extends RouteComponentProps<any> {
   previousName: string;
@@ -29,7 +30,7 @@ class NamePage extends React.Component<NamePageProps> {
 
     return (
         <WrapperPaper>
-            <Typography variant="h1">Go</Typography>
+            <img src={logo} className="App-logo" alt="Go" />
             <br />
             <br />
             <Typography variant="h4">Enter a name:</Typography>
