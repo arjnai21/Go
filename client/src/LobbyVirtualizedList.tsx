@@ -1,8 +1,9 @@
 import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { styled, Theme } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
+import { Paper } from '@material-ui/core';
 
 interface VirtualizedListProps {
   players: Array<string>,
@@ -36,20 +37,8 @@ interface VirtualizedListProps {
 // }
 
 class VirtualizedList extends React.Component<VirtualizedListProps> {
-  classes: any;
-
   constructor(props: VirtualizedListProps) {
     super(props);
-    this.classes = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-      height: 400,
-      maxWidth: 300,
-      backgroundColor: theme.palette.background.paper,
-    },
-  }),
-);
     this.handleInvite = this.handleInvite.bind(this);
     this.renderRow = this.renderRow.bind(this);
   }
@@ -71,11 +60,11 @@ class VirtualizedList extends React.Component<VirtualizedListProps> {
 
   render() {
     return (
-      <div className={this.classes.root}>
-        <FixedSizeList height={400} width={300} itemSize={46} itemCount={this.props.players.length} itemData = {{ playerArray: this.props.players}}>
+      <Paper style={{height: 200, maxWidth: 300, width: "50%", margin: "0 auto"}}>
+        <FixedSizeList height={200} width={300} itemSize={46} itemCount={this.props.players.length} itemData = {{ playerArray: this.props.players}}>
           {this.renderRow}
         </FixedSizeList>
-      </div>
+      </Paper>
     );
   }
 }

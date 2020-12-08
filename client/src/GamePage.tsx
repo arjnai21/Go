@@ -13,33 +13,47 @@ import {
   } from "react-router-dom";
 
 interface GamePageProps {
-    color?: string,
-    goTileHandler?: any,
-    board?: any,
-    currentPlayer?: string,
-    opponentName?: string
+    color: string,
+    opponentName: string
     returnButtonHandler?: any,
     socket: any
 }
 
 interface GamePageState {
-    color?: string,
-    goTileHandler?: any,
-    board?: any,
-    currentPlayer?: string,
-    opponentName?: string
-    returnButtonHandler?: any,
-    whiteCaptured?: number,
-    blackCaptured?: number,
-    win?: string
-    winSnackbarOpen?: boolean
+    board: any,
+    currentPlayer: string,
+    whiteCaptured: number,
+    blackCaptured: number,
+    win: string
+    winSnackbarOpen: boolean
 }
 
 class GamePage extends React.Component<GamePageProps, GamePageState> {
-  constructor(props: GamePageProps) {
-    super(props);
-    this.state = props;
-  }
+    constructor(props: GamePageProps) {
+        super(props);
+        this.goTileHandler = this.goTileHandler.bind(this);
+
+        const blankBoard = Array(9);
+        for (let i = 0; i < 9; i++) {
+            blankBoard[i] = Array(9);
+            for (let j = 0; j < 9; j++) {
+                blankBoard[i][j] = "X";
+            }
+        }
+        this.state = {
+            board: blankBoard,
+            currentPlayer: "B",
+            whiteCaptured: 0,
+            blackCaptured: 0,
+            win: "",
+            winSnackbarOpen: false
+        };
+    }
+
+    goTileHandler(xPos: number, yPos: number) {
+        console.log(`${xPos} ${yPos}`);
+        this.props.socket.emit("client_server_play_move", { x: yPos, y: xPos });
+    }
 
 //   changeState(newState: any) {
 //       this.setState(newState);
@@ -47,12 +61,15 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
 
   componentDidMount() {
     this.props.socket.on("server_client_move_played", (information: {board: any, moveError: string, whiteCaptured: number, blackCaptured: number, currentPlayer: string}) => {
+        console.log({board: information.board, whiteCaptured: information.whiteCaptured, blackCaptured: information.blackCaptured, currentPlayer: information.currentPlayer});
         this.setState({board: information.board, whiteCaptured: information.whiteCaptured, blackCaptured: information.blackCaptured, currentPlayer: information.currentPlayer})
     });
         
     this.props.socket.on("server_client_game_over", (information: {myCaptured: number, theirCaptured: number, win: string}) => {
         this.setState({win: information.win, winSnackbarOpen: true});
     });
+
+    console.log(this.state.currentPlayer);
   }
 
   render() {
@@ -74,14 +91,14 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
             ></Snackbar>
             
             <Typography variant="h5" style={{textAlign: "center"}}>
-                {this.state.opponentName} captured:
+                {this.props.opponentName} captured:
             </Typography>
             <Grid container direction="column" justify="center" alignItems="center" spacing={0}>
                 {
                     indexArray.map((row) => 
                         <Grid container direction="row" justify="center" alignItems="center" key={row} spacing={0}>
                             {
-                                indexArray.map((column) => <GoTile key={column} x={column} y={row} heldBy={this.state.board[row][column]} handler={this.state.goTileHandler} />)
+                                indexArray.map((column) => <GoTile key={column} x={column} y={row} heldBy={this.state.board[row][column]} handler={this.goTileHandler} />)
                             }
                         </Grid>
                     )

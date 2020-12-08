@@ -41,7 +41,7 @@ class NamePage extends React.Component<NamePageProps> {
             <Button variant="contained" style={{width: 150}} onClick={() => {
               this.props.setUsername(this.refs.username.value);
               console.log(this.refs.username.value);
-              this.props.history.push("/");
+              this.props.history.push("/lobby");
             }}>Play</Button>
         </WrapperPaper>
     );
