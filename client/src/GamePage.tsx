@@ -111,7 +111,7 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                 open={true}
                 key={"bottom" + "right"}
-            ><Button variant="contained" style={{textAlign: "center"}}>Pass</Button></Snackbar>
+            ><Button variant="contained" style={{textAlign: "center"}} onClick={() => {this.props.socket.emit("client_server_play_move", { x: -1, y: -1 });}}>Pass</Button></Snackbar>
             
         </div>
     );
