@@ -9,10 +9,10 @@ import {
     Switch,
     Route,
     Link,
-    useHistory,
+    useHistory, RouteComponentProps, withRouter
   } from "react-router-dom";
 
-interface GamePageProps {
+interface GamePageProps extends RouteComponentProps<any> {
     color: string,
     opponentName: string
     returnButtonHandler?: any,
@@ -85,13 +85,13 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
             <Snackbar
                 anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 open={this.state.winSnackbarOpen}
-                message={this.state.win + " won!"}
+                message={(this.state.win == this.props.color ? "You" : this.props.opponentName) + " won!"}
                 key={"top" + "right"}
-                action={<Button variant="contained">Return</Button>}
+                action={<Button variant="contained" onClick={() => this.props.history.push("/lobby")}>Return</Button>}
             ></Snackbar>
             
             <Typography variant="h5" style={{textAlign: "center"}}>
-                {this.props.opponentName} captured:
+                {this.props.opponentName} captured: {(this.props.color == "B" ? this.state.whiteCaptured : this.state.blackCaptured)}
             </Typography>
             <Grid container direction="column" justify="center" alignItems="center" spacing={0}>
                 {
@@ -105,7 +105,7 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
                 }
             </Grid> 
             <Typography variant="h5" style={{textAlign: "center"}}>
-                You captured:
+                You captured: {(this.props.color == "B" ? this.state.blackCaptured : this.state.whiteCaptured)}
             </Typography>
             <Snackbar
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -118,4 +118,4 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
   }
 }
 
-export default GamePage;
+export default withRouter(GamePage);
