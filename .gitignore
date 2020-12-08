@@ -368,3 +368,4 @@ nbactions.xml
 ### Sass ###
 .sass-cache/
 *.css.map
+client/yarn.lock
