@@ -65,13 +65,14 @@ class Game {
             if(this.isValidMove(move.x, move.y)) {
                 this.passCount = 0;
                 this.board[move.x][move.y] = this.currentPlayer.color;
-                this.currentPlayer = player == this.player2 ? this.player1 : this.player2;
                 if(this.currentPlayer.color =="W"){
                     this.whiteCaptured++;
                 }
                 else{
                     this.blackCaptured++;
                 }
+                this.currentPlayer = player == this.player2 ? this.player1 : this.player2;
+
                 // this.checkGameOver();
                 return "no_error";
             }
