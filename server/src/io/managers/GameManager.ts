@@ -51,7 +51,7 @@ class GameManager {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             // eslint-disable-next-line max-len
-            const winner:Player = game?.whiteCaptured > game?.blackCaptured ? game.player1 : game.player2;
+            const winner : Player = game?.whiteCaptured > game?.blackCaptured ? game.player1 : game.player2;
             this.gameOver(winner);
             return "game_over";
         }
