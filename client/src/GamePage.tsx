@@ -65,8 +65,8 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
         this.setState({board: information.board, whiteCaptured: information.whiteCaptured, blackCaptured: information.blackCaptured, currentPlayer: information.currentPlayer})
     });
         
-    this.props.socket.on("server_client_game_over", (information: {myCaptured: number, theirCaptured: number, win: string}) => {
-        this.setState({win: information.win, winSnackbarOpen: true});
+    this.props.socket.on("server_client_game_over", (information: {whiteCaptured: number, blackCaptured: number, win: string}) => {
+        this.setState({win: information.win, winSnackbarOpen: true, whiteCaptured: information.whiteCaptured, blackCaptured: information.blackCaptured});
     });
 
     console.log(this.props);

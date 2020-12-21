@@ -51,8 +51,13 @@ class GameManager {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             // eslint-disable-next-line max-len
-            const winner : Player = game?.whiteCaptured > game?.blackCaptured ? game.player1 : game.player2;
-            this.gameOver(winner);
+            game?.calculateFinalScore();
+            let winner : Player;
+            if (game) {
+                winner = game?.whiteCaptured > game?.blackCaptured ? game?.player1 : game?.player2;
+                this.gameOver(winner);
+            }
+            
             return "game_over";
         }
         const returnObj = {
@@ -92,14 +97,17 @@ class GameManager {
             const opponentPlayer = player === game.player1 ? game.player2 : game.player1;
 
             const opponentUsername = opponentPlayer.username;
-            const myCaptured = game.getCapturedPieces(player.color);
-            const theirCaptured = game.getCapturedPieces(opponentPlayer.username);
+            // const myCaptured = game.getCapturedPieces(player.color);
+            // const theirCaptured = game.getCapturedPieces(opponentPlayer.username);
 
+            const whiteCaptured = game.whiteCaptured;
+            const blackCaptured = game.blackCaptured;
+            
             const returnObj = {
                 isForfeit,
                 opponentUsername,
-                myCaptured,
-                theirCaptured,
+                whiteCaptured,
+                blackCaptured,
                 win: winner.color
             };
             player.socket.emit('server_client_game_over', returnObj);

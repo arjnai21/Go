@@ -175,6 +175,74 @@ class Game {
         return {hasLiberties : hasLiberties, group : visited};
     }
 
+    calculateFinalScore() {
+        let visited : Array<boolean> = new Array(this.board.length * this.board.length).fill(false);
+        for (let x = 0; x < this.board.length; x++) {
+            for (let y = 0; y < this.board[x].length; y++) {
+                if (!visited[this.positionId(x, y)]) {
+                    const result : {hasBorder: Array<boolean>, area: number} = this.calculateArea(x, y, visited);
+                    if (result.hasBorder[0] && !result.hasBorder[1]) {
+                        this.blackCaptured += result.area;
+                    } else if (!result.hasBorder[0] && result.hasBorder[1]) {
+                        this.whiteCaptured += result.area;
+                    }
+
+                    if (this.board[x][y] == 'B') {
+                        this.blackCaptured++;
+                    } else if (this.board[x][y] == 'W') {
+                        this.whiteCaptured++;
+                    }
+                }
+            }
+        }
+    }
+
+    calculateArea(x: number, y : number, visited: Array<boolean>) : {hasBorder: Array<boolean> /* black, white */, area: number} {
+        if (visited[this.positionId(x, y)]) {
+            return {hasBorder: [false, false], area : 0};
+        }
+        visited[this.positionId(x, y)] = true;
+
+        let hasBorder : Array<boolean> = new Array(2).fill(false);
+        let area : number = 0;
+
+        if (this.board[x][y] != 'X') {
+            hasBorder[this.board[x][y] == 'B' ? 0 : 1] ||= true;
+            visited[this.positionId(x, y)] = false;
+            return {hasBorder : hasBorder, area : 0};
+        } else {
+            if (x > 0) {
+                const result : {hasBorder: Array<boolean>, area: number} = this.calculateArea(x-1, y, visited);
+                hasBorder[0] ||= result.hasBorder[0];
+                hasBorder[1] ||= result.hasBorder[1];
+                area += result.area;
+            }
+            
+            if (y > 0) {
+                const result : {hasBorder: Array<boolean>, area: number} = this.calculateArea(x, y-1, visited);
+                hasBorder[0] ||= result.hasBorder[0];
+                hasBorder[1] ||= result.hasBorder[1];
+                area += result.area;
+            }
+            
+            if (x < this.board.length-1) {
+                const result : {hasBorder: Array<boolean>, area: number} = this.calculateArea(x+1, y, visited);
+                hasBorder[0] ||= result.hasBorder[0];
+                hasBorder[1] ||= result.hasBorder[1];
+                area += result.area;
+            }
+            
+            if (y < this.board.length-1) {
+                const result : {hasBorder: Array<boolean>, area: number} = this.calculateArea(x, y+1, visited);
+                hasBorder[0] ||= result.hasBorder[0];
+                hasBorder[1] ||= result.hasBorder[1];
+                area += result.area;
+            }
+
+            return {hasBorder : hasBorder, area : area+1};
+        }
+    }
+
     getBoard() : Array<Array<string>>{
         return this.board;
     }
