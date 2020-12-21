@@ -68,6 +68,11 @@ class Game {
 
                 this.attemptCapture(move.x, move.y);
 
+                const result = this.checkGroup(move.x, move.y);
+                if (!result.hasLiberties) {
+                    this.capture(result.group);
+                }
+
                 // if(this.currentPlayer.color =="W"){
                 //     this.whiteCaptured++;
                 // }
@@ -121,13 +126,13 @@ class Game {
     }
 
     capture(captured: Set<number>) {
-        const firstValue: number = captured.values().next().value;
-        const myColor: string = (this.board[firstValue % this.board.length][Math.floor(firstValue / this.board.length)] == 'B' ? 'W' : 'B');
-        if (myColor == 'B') {
-            this.blackCaptured += captured.size;
-        } else {
-            this.whiteCaptured += captured.size;
-        }
+        const firstValue : number = captured.values().next().value;
+        const myColor : string = (this.board[firstValue%this.board.length][Math.floor(firstValue/this.board.length)] == 'B' ? 'W' : 'B');
+        // if (myColor == 'B') {
+        //     this.blackCaptured += captured.size;
+        // } else {
+        //     this.whiteCaptured += captured.size;
+        // }
 
         for (let position of captured) {
             this.board[position % this.board.length][Math.floor(position / this.board.length)] = 'X';
