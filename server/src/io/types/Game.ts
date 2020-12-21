@@ -64,13 +64,17 @@ class Game {
         else{
             if(this.isValidMove(move.x, move.y)) {
                 this.passCount = 0;
+
                 this.board[move.x][move.y] = this.currentPlayer.color;
-                if(this.currentPlayer.color =="W"){
-                    this.whiteCaptured++;
-                }
-                else{
-                    this.blackCaptured++;
-                }
+
+                this.attemptCapture(move.x, move.y);
+
+                // if(this.currentPlayer.color =="W"){
+                //     this.whiteCaptured++;
+                // }
+                // else{
+                //     this.blackCaptured++;
+                // }
                 this.currentPlayer = player == this.player2 ? this.player1 : this.player2;
 
                 // this.checkGameOver();
@@ -80,6 +84,95 @@ class Game {
                 return "unknown_error"
             }
         }
+    }
+
+    positionId(x: number, y: number) : number {
+        return y * this.board.length + x;
+    }
+
+    attemptCapture(x : number, y : number) {
+        const opponentColor : string = (this.board[x][y] == 'B' ? 'W' : 'B');
+
+        if (x > 0 && this.board[x-1][y] == opponentColor) {
+            const result = this.checkGroup(x-1, y);
+            if (!result.hasLiberties) {
+                this.capture(result.group);
+            }
+        }
+        
+        if (y > 0 && this.board[x][y-1] == opponentColor) {
+            const result = this.checkGroup(x, y-1);
+            if (!result.hasLiberties) {
+                this.capture(result.group);
+            }
+        }
+        
+        if (x < this.board.length-1 && this.board[x+1][y] == opponentColor) {
+            const result = this.checkGroup(x+1, y);
+            if (!result.hasLiberties) {
+                this.capture(result.group); 
+            }
+        }
+        
+        if (y < this.board.length-1 && this.board[x][y+1] == opponentColor) {
+            const result = this.checkGroup(x, y+1);
+            if (!result.hasLiberties) {
+                this.capture(result.group);
+            }
+        }
+    }
+
+    capture(captured: Set<number>) {
+        const firstValue : number = captured.values().next().value;
+        const myColor : string = (this.board[firstValue%this.board.length][Math.floor(firstValue/this.board.length)] == 'B' ? 'W' : 'B');
+        if (myColor == 'B') {
+            this.blackCaptured += captured.size;
+        } else {
+            this.whiteCaptured += captured.size;
+        }
+
+        for (let position of captured) {
+            this.board[position % this.board.length][Math.floor(position / this.board.length)] = 'X';
+        }
+    }
+
+    checkGroup(startX : number, startY : number) : {hasLiberties : boolean, group : Set<number>} {
+        return this.checkGroupDFS(startX, startY, this.board[startX][startY], new Set());
+    }
+
+    checkGroupDFS(x: number, y : number, color: string, visited: Set<number>) : {hasLiberties : boolean, group : Set<number>} {
+        if (visited.has(this.positionId(x, y))) {
+            return {hasLiberties : false, group : visited};
+        }
+        visited.add(this.positionId(x, y));
+
+        let hasLiberties : boolean = false;
+        hasLiberties ||= x > 0 && this.board[x-1][y] == 'X';
+        hasLiberties ||= y > 0 && this.board[x][y-1] == 'X';
+        hasLiberties ||= x < this.board.length-1 && this.board[x+1][y] == 'X';
+        hasLiberties ||= y < this.board.length-1 && this.board[x][y+1] == 'X';
+
+        if (x > 0 && this.board[x-1][y] == color) {
+            const result : {hasLiberties : boolean, group : Set<number>} = this.checkGroupDFS(x-1, y, color, visited);
+            hasLiberties ||= result.hasLiberties;
+        }
+        
+        if (y > 0 && this.board[x][y-1] == color) {
+            const result : {hasLiberties : boolean, group : Set<number>} = this.checkGroupDFS(x, y-1, color, visited);
+            hasLiberties ||= result.hasLiberties;
+        }
+        
+        if (x < this.board.length-1 && this.board[x+1][y] == color) {
+            const result : {hasLiberties : boolean, group : Set<number>} = this.checkGroupDFS(x+1, y, color, visited);
+            hasLiberties ||= result.hasLiberties;
+        }
+        
+        if (y < this.board.length-1 && this.board[x][y+1] == color) {
+            const result : {hasLiberties : boolean, group : Set<number>} = this.checkGroupDFS(x, y+1, color, visited);
+            hasLiberties ||= result.hasLiberties;
+        }
+
+        return {hasLiberties : hasLiberties, group : visited};
     }
 
     getBoard() : Array<Array<string>>{

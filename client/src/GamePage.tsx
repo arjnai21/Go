@@ -69,7 +69,8 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
         this.setState({win: information.win, winSnackbarOpen: true});
     });
 
-    console.log(this.state.currentPlayer);
+    console.log(this.props);
+    console.log(this.state);
   }
 
   render() {
