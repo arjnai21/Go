@@ -5,7 +5,7 @@ class GameRequest {
     from: string
     to: string
 
-    constructor(from:string, to:string) {
+    constructor(from: string, to: string) {
         this.id = `${from.toLowerCase()}-${to.toLowerCase()}`;
         this.to = to;
         this.from = from;

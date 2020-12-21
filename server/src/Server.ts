@@ -1,8 +1,8 @@
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
-import helmet, {permittedCrossDomainPolicies} from 'helmet';
+import helmet from 'helmet';
 
-import express, { NextFunction, Request, Response } from 'express';
+import express, {NextFunction, Request, Response} from 'express';
 import StatusCodes from 'http-status-codes';
 import 'express-async-errors';
 import cors from 'cors';
@@ -10,8 +10,7 @@ import cors from 'cors';
 import logger from '@shared/Logger';
 
 const app = express();
-const { BAD_REQUEST } = StatusCodes;
-
+const {BAD_REQUEST} = StatusCodes;
 
 
 /************************************************************************************
@@ -35,7 +34,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // Add APIs
 
-app.get("*", function (req, res){
+app.get("*", function (req, res) {
     //res.json({'hi': 'this page doesnt exist'}); // TODO: This shows up if I don't comment it out -- I commented it out, but we need to fix later 
     res.send("");
 });
@@ -48,7 +47,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
         error: err.message,
     });
 });
-
 
 
 /************************************************************************************

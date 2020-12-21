@@ -18,7 +18,7 @@ function displayUsers() {
                 allUsersAnchor.innerHTML += getUserDisplayEle(user);
             });
         });
-};
+}
 
 
 function getUserDisplayEle(user) {
@@ -118,7 +118,7 @@ function submitEdit(ele) {
             id: id
         }
     };
-	httpPut('/api/users/update', data)
+    httpPut('/api/users/update', data)
         .then(() => {
             displayUsers();
         })
@@ -127,7 +127,7 @@ function submitEdit(ele) {
 
 function deleteUser(ele) {
     var id = ele.getAttribute('data-user-id');
-	httpDelete('/api/users/delete/' + id)
+    httpDelete('/api/users/delete/' + id)
         .then(() => {
             displayUsers();
         })

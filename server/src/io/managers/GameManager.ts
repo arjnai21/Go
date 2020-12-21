@@ -29,12 +29,12 @@ class GameManager {
         player2.setGameId(id);
         player2.setColor("B");
         this.games.set(id, newGame);
-        player1.socket.emit("server_client_game_start",{
+        player1.socket.emit("server_client_game_start", {
             color: player1.color,
             opponent: player2.username,
             gameId: newGame.id,
         });
-        player2.socket.emit("server_client_game_start",{
+        player2.socket.emit("server_client_game_start", {
             color: player2.color,
             opponent: player1.username,
             gameId: newGame.id,
@@ -47,27 +47,54 @@ class GameManager {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         const game = this.games.get(player.gameID);
         const response =  game?.playMove(player, move);
+        let blackCapturedBefore : number = 0, whiteCapturedBefore : number = 0;
+        if (game) {
+            blackCapturedBefore = game.blackCaptured;
+            whiteCapturedBefore = game.whiteCaptured
+        }
+
+        game?.calculateFinalScore();
+        if(response == "game_over"){
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            // eslint-disable-next-line max-len
+            game?.calculateFinalScore();
+            let winner : Player;
+            if (game) {
+                winner = game?.whiteCaptured > game?.blackCaptured ? game?.player1 : game?.player2;
+                this.gameOver(winner);
+            }
+
+            return "game_over";
+        }
         const returnObj = {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            board: game.getBoard(),
+            board: game?.getBoard(),
             moveError: response,
-            whiteCaptured: 0,
-            blackCaptured: 0,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            whiteCaptured: game.whiteCaptured,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            blackCaptured: game.blackCaptured,
             currentPlayer: game?.currentPlayer.color
         };
         game?.player1.socket.emit("server_client_move_played", returnObj);
         game?.player2.socket.emit("server_client_move_played", returnObj);
+        if (game) {
+            game.setCaptured(blackCapturedBefore, whiteCapturedBefore);
+        }
     }
 
-    gameOver(winner: Player, isForfeit= false): boolean {
+    gameOver(winner: Player, isForfeit = false): boolean {
         // 1. get game
         // 2. remove games from list
         // 3. remove game ids from players
         // 4. send results to both players
         const game = this.games.get(winner.gameID);
 
-        if(!game) {
+        if (!game) {
             // error should be thrown
             return false;
         }
@@ -76,21 +103,25 @@ class GameManager {
         game.player1.setGameId("");
         game.player2.setGameId("");
 
-        for(const player of [game.player1, game.player2]) {
+        for (const player of [game.player1, game.player2]) {
             const opponentPlayer = player === game.player1 ? game.player2 : game.player1;
 
             const opponentUsername = opponentPlayer.username;
-            const myCaptured = game.getCapturedPieces(player.color);
-            const theirCaptured = game.getCapturedPieces(opponentPlayer.username);
+            // const myCaptured = game.getCapturedPieces(player.color);
+            // const theirCaptured = game.getCapturedPieces(opponentPlayer.username);
+
+            const whiteCaptured = game.whiteCaptured;
+            const blackCaptured = game.blackCaptured;
 
             const returnObj = {
                 isForfeit,
                 opponentUsername,
-                myCaptured,
-                theirCaptured,
+                whiteCaptured,
+                blackCaptured,
                 win: winner.color
             };
             player.socket.emit('server_client_game_over', returnObj);
+            console.log("THIS GAME IS OVER");
         }
 
         return true;
