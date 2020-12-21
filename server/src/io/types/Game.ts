@@ -177,6 +177,9 @@ class Game {
 
     calculateFinalScore() {
         let visited : Array<boolean> = new Array(this.board.length * this.board.length).fill(false);
+        // let tmp: number = this.blackCaptured;
+        // this.blackCaptured = -this.whiteCaptured;
+        // this.whiteCaptured = -tmp; 
         for (let x = 0; x < this.board.length; x++) {
             for (let y = 0; y < this.board[x].length; y++) {
                 if (!visited[this.positionId(x, y)]) {
@@ -186,6 +189,8 @@ class Game {
                     } else if (!result.hasBorder[0] && result.hasBorder[1]) {
                         this.whiteCaptured += result.area;
                     }
+
+                    console.log()
 
                     if (this.board[x][y] == 'B') {
                         this.blackCaptured++;
@@ -285,6 +290,11 @@ class Game {
             return this.blackCaptured;
         }
         return -1;
+    }
+
+    setCaptured(black: number, white: number) {
+        this.blackCaptured = black;
+        this.whiteCaptured = white;
     }
 
 }

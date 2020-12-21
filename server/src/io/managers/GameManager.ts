@@ -47,11 +47,17 @@ class GameManager {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         const game = this.games.get(player.gameID);
         const response =  game?.playMove(player, move);
+        let blackCapturedBefore : number = 0, whiteCapturedBefore : number = 0;
+        if (game) {
+            blackCapturedBefore = game.blackCaptured;
+            whiteCapturedBefore = game.whiteCaptured
+        }
+
+        game?.calculateFinalScore();
         if(response == "game_over"){
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             // eslint-disable-next-line max-len
-            game?.calculateFinalScore();
             let winner : Player;
             if (game) {
                 winner = game?.whiteCaptured > game?.blackCaptured ? game?.player1 : game?.player2;
@@ -75,6 +81,9 @@ class GameManager {
         };
         game?.player1.socket.emit("server_client_move_played", returnObj);
         game?.player2.socket.emit("server_client_move_played", returnObj);
+        if (game) {
+            game.setCaptured(blackCapturedBefore, whiteCapturedBefore);
+        }
     }
 
     gameOver(winner: Player, isForfeit= false): boolean {
