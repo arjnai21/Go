@@ -58,7 +58,6 @@ class GameManager {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             // eslint-disable-next-line max-len
-            game?.calculateFinalScore();
             let winner : Player;
             if (game) {
                 winner = game?.whiteCaptured > game?.blackCaptured ? game?.player1 : game?.player2;
