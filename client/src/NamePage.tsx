@@ -29,7 +29,7 @@ class NamePage extends React.Component<NamePageProps> {
         }));
 
         return (
-            <WrapperPaper>
+            <WrapperPaper style={{ background: "#fffaed" }} elevation={3}>
                 <img src={logo} className="App-logo" alt="Go"/>
                 <br/>
                 <br/>

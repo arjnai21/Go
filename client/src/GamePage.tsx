@@ -92,6 +92,9 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
 
         return (
             <div className="GamePage">
+                <Typography variant = "h3" style={{textAlign: "center", color: "white", backgroundColor: "black"}} >
+                    {this.state.currentPlayer === this.props.color ? "Your Turn!" : "Opponent's Turn!"}
+                </Typography>
                 <Snackbar
                     anchorOrigin={{vertical: "top", horizontal: "right"}}
                     open={this.state.winSnackbarOpen}
@@ -120,9 +123,6 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
                 <Typography variant="h5" style={{textAlign: "center"}}>
                     You captured: {(this.props.color == "B" ? this.state.blackCaptured : this.state.whiteCaptured)} <br/><br/>
                 </Typography>
-                <Typography variant = "h3" style={{textAlign: "center", color: "white", backgroundColor: "black"}} >
-                    {this.state.currentPlayer === this.props.color ? "Your Turn!" : "Opponent's Turn!"}
-                </Typography>
                 <Snackbar
                     anchorOrigin={{vertical: "bottom", horizontal: "right"}}
                     open={true}
@@ -130,9 +130,6 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
                 ><Button variant="contained" style={{textAlign: "center"}} onClick={() => {
                     this.props.socket.emit("client_server_play_move", {x: -1, y: -1});
                 }}>Pass</Button></Snackbar>
-
-
-
             </div>
 
         );

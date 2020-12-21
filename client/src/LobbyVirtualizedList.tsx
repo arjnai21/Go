@@ -59,7 +59,7 @@ class VirtualizedList extends React.Component<VirtualizedListProps> {
 
     render() {
         return (
-            <Paper style={{height: 200, maxWidth: 300, width: "50%", margin: "0 auto"}}>
+            <Paper style={{height: 200, maxWidth: 300, width: "50%", margin: "0 auto"}} elevation={3}>
                 <FixedSizeList height={200} width={300} itemSize={46} itemCount={this.props.players.length}
                                itemData={{playerArray: this.props.players}}>
                     {this.renderRow}

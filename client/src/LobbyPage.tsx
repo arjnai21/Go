@@ -109,7 +109,7 @@ class LobbyPage extends React.Component<LobbyPageProps, LobbyPageState> {
 
         return (
             <div className="LobbyPage">
-                <WrapperPaper>
+                <WrapperPaper style={{ background: "#fffaed" }} elevation={3}>
                     <h1>Lobby</h1>
 
                     <h2>Pick someone to play with!</h2>
