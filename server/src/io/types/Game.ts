@@ -48,7 +48,6 @@ class Game {
 
         if (move.x == -1 && move.y == -1) {
             //user decided to pass
-            console.log("RECIEVED PASS EVENT");
             this.passCount++;
             if (this.checkGameOver()) {
 
@@ -134,7 +133,7 @@ class Game {
         //     this.whiteCaptured += captured.size;
         // }
 
-        for (let position of captured) {
+        for (const position of captured) {
             this.board[position % this.board.length][Math.floor(position / this.board.length)] = 'X';
         }
     }
@@ -192,8 +191,6 @@ class Game {
                     } else if (!result.hasBorder[0] && result.hasBorder[1]) {
                         this.whiteCaptured += result.area;
                     }
-
-                    console.log()
 
                     if (this.board[x][y] == 'B') {
                         this.blackCaptured++;
@@ -273,8 +270,6 @@ class Game {
         if ((x >= this.board.length || y >= this.board[x].length || this.board[x][y] !== 'X') && !(x == -1 && y == -1))
             return false
 
-        // TODO: implement valid move logic
-        // basically check if move is in an already captured zone
         return true;
     }
 
