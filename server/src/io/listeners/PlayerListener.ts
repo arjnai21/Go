@@ -2,7 +2,7 @@
  * Player-Related Protocol
  */
 import SocketListener from '../types/SocketListener';
-import { Socket } from 'socket.io';
+import {Socket} from 'socket.io';
 import ProtocolManager from "../ProtocolManager";
 
 // Requests
@@ -20,13 +20,13 @@ class PlayerListener extends SocketListener {
     }
 
     configure() {
-        const { manager, socket } = this;
+        const {manager, socket} = this;
 
         // username
-        socket.on('client_server_set_username', function(data: UsernameRequest) {
+        socket.on('client_server_set_username', function (data: UsernameRequest) {
             console.log("username is attempted to be changed");
-            if(data.username) {
-                if(manager.player.setUsername(socket, data.username)) {
+            if (data.username) {
+                if (manager.player.setUsername(socket, data.username)) {
                     console.log("updated upsername")
                     manager.sendMessage(socket, "Successfully updated username!");
                     console.log(manager.connections);

@@ -29,12 +29,12 @@ class GameManager {
         player2.setGameId(id);
         player2.setColor("B");
         this.games.set(id, newGame);
-        player1.socket.emit("server_client_game_start",{
+        player1.socket.emit("server_client_game_start", {
             color: player1.color,
             opponent: player2.username,
             gameId: newGame.id,
         });
-        player2.socket.emit("server_client_game_start",{
+        player2.socket.emit("server_client_game_start", {
             color: player2.color,
             opponent: player1.username,
             gameId: newGame.id,
@@ -58,12 +58,13 @@ class GameManager {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             // eslint-disable-next-line max-len
+            game?.calculateFinalScore();
             let winner : Player;
             if (game) {
                 winner = game?.whiteCaptured > game?.blackCaptured ? game?.player1 : game?.player2;
                 this.gameOver(winner);
             }
-            
+
             return "game_over";
         }
         const returnObj = {
@@ -86,14 +87,14 @@ class GameManager {
         }
     }
 
-    gameOver(winner: Player, isForfeit= false): boolean {
+    gameOver(winner: Player, isForfeit = false): boolean {
         // 1. get game
         // 2. remove games from list
         // 3. remove game ids from players
         // 4. send results to both players
         const game = this.games.get(winner.gameID);
 
-        if(!game) {
+        if (!game) {
             // error should be thrown
             return false;
         }
@@ -102,7 +103,7 @@ class GameManager {
         game.player1.setGameId("");
         game.player2.setGameId("");
 
-        for(const player of [game.player1, game.player2]) {
+        for (const player of [game.player1, game.player2]) {
             const opponentPlayer = player === game.player1 ? game.player2 : game.player1;
 
             const opponentUsername = opponentPlayer.username;
@@ -111,7 +112,7 @@ class GameManager {
 
             const whiteCaptured = game.whiteCaptured;
             const blackCaptured = game.blackCaptured;
-            
+
             const returnObj = {
                 isForfeit,
                 opponentUsername,
