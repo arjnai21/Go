@@ -1,4 +1,4 @@
-import { Socket } from "socket.io";
+import {Socket} from "socket.io";
 
 class Player {
 
@@ -20,15 +20,15 @@ class Player {
         return this.username.length > 0;
     }
 
-    setGameId(id: string){
+    setGameId(id: string) {
         this.gameID = id;
     }
 
-    setColor(color: string){
+    setColor(color: string) {
         this.color = color;
     }
 
-    getColor(){
+    getColor() {
         return this.color;
     }
 }

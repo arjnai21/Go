@@ -1,5 +1,4 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
 
 interface GoTileProps {
     x: number,
@@ -39,13 +38,14 @@ class GoTile extends React.Component<GoTileProps, unknown> {
         return path + ".svg";
     }
 
-  render() {
-    return (
-        <React.Fragment>
-<img src={this.determineImg()} style={{width: 40}} className="GoTile-img" alt="GoTile-img" onClick={() => this.props.handler(this.props.x, this.props.y)} />
-        </React.Fragment>
-    );
-  }
+    render() {
+        return (
+            <React.Fragment>
+                <img src={this.determineImg()} style={{width: 40}} className="GoTile-img" alt="GoTile-img"
+                     onClick={() => this.props.handler(this.props.x, this.props.y)}/>
+            </React.Fragment>
+        );
+    }
 }
 
 export default GoTile;

@@ -1,10 +1,10 @@
 import {Connections} from "../ProtocolManager";
-import { CacheClass, Cache } from "memory-cache";
+import {Cache, CacheClass} from "memory-cache";
 import GameRequest from "../types/GameRequest";
 import Player from "../types/Player";
 
 // expire after 1 minute(s)
-const GAME_REQUEST_TIMEOUT = 60*1000;
+const GAME_REQUEST_TIMEOUT = 60 * 1000;
 
 class GameRequestManager {
 
@@ -21,8 +21,8 @@ class GameRequestManager {
         // console.log("GETTING LOBBY PLAYERS");
         // console.log(this.connections);
 
-        for(const player of Object.values(this.connections)) {
-            if(player.hasUsername() && player.socket.id !== requester.socket.id) {
+        for (const player of Object.values(this.connections)) {
+            if (player.hasUsername() && player.socket.id !== requester.socket.id) {
                 players.push(player.username);
             }
         }
@@ -41,9 +41,9 @@ class GameRequestManager {
     sendGameRequest(sender: Player, to: string): boolean {
         const request = new GameRequest(sender.username, to);
 
-        for(const player of Object.values(this.connections)) {
+        for (const player of Object.values(this.connections)) {
             // eslint-disable-next-line max-len
-            if(player.hasUsername() && player.username.toLowerCase() === to.toLowerCase() && !player.inGame) {
+            if (player.hasUsername() && player.username.toLowerCase() === to.toLowerCase() && !player.inGame) {
                 player.socket.emit('server_client_game_request', request);
                 this.gameRequests.put(request.id, request, GAME_REQUEST_TIMEOUT);
                 return true;

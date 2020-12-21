@@ -60,7 +60,7 @@ class ProtocolManager {
         this.broadcastLobby();
     }
 
-    broadcastLobby(){
+    broadcastLobby() {
         const keys = Object.keys(this.connections);
         console.log(keys)
         for (let i = 0; i < keys.length; i++) {

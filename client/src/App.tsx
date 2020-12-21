@@ -1,19 +1,7 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import LobbyPage from "./LobbyPage";
-import GamePage from "./GamePage";
-import SocketIO from "socket.io-client";
-import {
-  BrowserRouter,
-  Switch,
-  Route,
-  Link,
-  useHistory,
-} from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import {RouteComponentProps, withRouter,} from "react-router-dom";
 
-class App extends React.Component<{/*default props*/} & RouteComponentProps, {socket: any}> {
+class App extends React.Component<{/*default props*/ } & RouteComponentProps, { socket: any }> {
     // lobbyPage: any;
     // gamePage: any;
 
@@ -30,7 +18,7 @@ class App extends React.Component<{/*default props*/} & RouteComponentProps, {so
 
     // SetUsername(username: string) {
     //     this.state.socket.emit("client_server_set_username", {username});
-    
+
     //     this.lobbyPage = <LobbyPage username={username} players={[""]} inviteDialogOpen={false} socket={this.state.socket} />
     //     // gamePage = new GamePage({color:"B", goTileHandler:goTileHandler, board:blankBoard, currentPlayer:"B", opponentName:information.opponent});
     //     console.log(this.lobbyPage)
@@ -39,11 +27,11 @@ class App extends React.Component<{/*default props*/} & RouteComponentProps, {so
 
     // SetUsernameForm() {
     //     var username : string;
-      
+
     //     function handleChange(e : any) {
     //       username = e.target.value;
     //     }
-      
+
     //     return (
     //       <div>
     //         <label>
@@ -86,7 +74,7 @@ class App extends React.Component<{/*default props*/} & RouteComponentProps, {so
 
     //     this.state.socket.on("connect", () => console.log("connection"));
     //     this.state.socket.on("server_message", (message: any) => console.log(message));
-        
+
     //     this.state.socket.on(
     //       "server_client_game_start",
     //       (information: { gameId: number; color: string; opponent: string }) => {
@@ -98,17 +86,17 @@ class App extends React.Component<{/*default props*/} & RouteComponentProps, {so
     //             blankBoard[i][j] = "X";
     //           }
     //         }
-        
+
     //         this.gamePage = <GamePage color={"B"} goTileHandler={this.goTileHandler} board={blankBoard} currentPlayer={"B"} opponentName={information.opponent} socket={this.state.socket} />
     //         // gamePage = new GamePage({color:"B", goTileHandler:goTileHandler, board:blankBoard, currentPlayer:"B", opponentName:information.opponent});
     //         this.props.history.push("/game");
     //       }
     //     );
-        
+
     //     // this.state.socket.on("server_client_move_played", (information: {board: any, moveError: string, whiteCaptured: Number, blackCaptured: Number, currentPlayer: string}) => {
     //     //   GamePage.changeState({board: information.board, whiteCaptured: information.whiteCaptured, blackCaptured: information.blackCaptured, currentPlayer: information.currentPlayer})
     //     // });
-        
+
     //     // this.state.socket.on("server_client_game_over", (information: {myCaptured: Number, theirCaptured: Number, win: String}) => {
     //     //   GamePage.changeState({win: information.win, winSnackbarOpen: true});
     //     // });
@@ -117,7 +105,7 @@ class App extends React.Component<{/*default props*/} & RouteComponentProps, {so
     // render() {
     //     return (
     //         <div className="App">
-                
+
     //             <Switch>
     //             <Route exact path="/">
     //                 <this.SetUsernameForm></this.SetUsernameForm>

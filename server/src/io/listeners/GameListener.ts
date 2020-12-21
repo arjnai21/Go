@@ -2,7 +2,7 @@
  * Player-Related Protocol
  */
 import SocketListener from '../types/SocketListener';
-import { Socket } from 'socket.io';
+import {Socket} from 'socket.io';
 import ProtocolManager from "../ProtocolManager";
 
 // Requests
@@ -21,13 +21,13 @@ class GameListener extends SocketListener {
     }
 
     configure() {
-        const { socket, manager } = this;
+        const {socket, manager} = this;
         const me = manager.getPlayer(socket);
 
         // eslint-disable-next-line max-len
-        socket.on("client_server_play_move", function (data: Move){ //TODO ONLY SEND TO THE PERSON WHO DIDNT PLAY WHICH ISNT EVEN THAT HARD TO IMPLEMENT BUT I DIDNT DO IT FOR SOME REASON
-            const response : string = manager.game.playMove(me, data);
-            if(response == "game_over"){
+        socket.on("client_server_play_move", function (data: Move) { //TODO ONLY SEND TO THE PERSON WHO DIDNT PLAY WHICH ISNT EVEN THAT HARD TO IMPLEMENT BUT I DIDNT DO IT FOR SOME REASON
+            const response: string = manager.game.playMove(me, data);
+            if (response == "game_over") {
                 //game over already handled, nothing o do
                 return;
             }
@@ -48,10 +48,10 @@ class GameListener extends SocketListener {
             // socket.emit("server_client_move_played", returnObj);
         });
 
-        socket.on("client_server_forfeit", function() {
+        socket.on("client_server_forfeit", function () {
             const game = manager.game.getGame(me);
 
-            if(!game) {
+            if (!game) {
                 manager.sendError(me.socket, 'You are not in a game!');
                 return;
             }
