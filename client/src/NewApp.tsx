@@ -17,7 +17,7 @@ class App extends React.Component<{}, AppState> {
 
     constructor(props: any) {
         super(props);
-        this.state = {username: "", color: "B", opponentName: "opponent", socket: SocketIO.io("http://localhost:3001")};
+        this.state = {username: "", color: "B", opponentName: "opponent", socket: SocketIO.io("https://go-game-lab.herokuapp.com:443")};
         this.setUsername = this.setUsername.bind(this);
         this.setColor = this.setColor.bind(this);
         this.setOpponentName = this.setOpponentName.bind(this);

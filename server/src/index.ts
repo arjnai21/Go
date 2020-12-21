@@ -20,7 +20,8 @@ const manager = new ProtocolManager();
 
 configureListeners(ioServer, manager);
 
-ioServer.listen(http, {cors: {origin: 'http://localhost:3000'}})
+ioServer.listen(http, { cors: { origin: 'https://go.ionita.dev' } })
+
 http.listen(port, () => {
     logger.info('Express server started on port: ' + port);
 });
